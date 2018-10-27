@@ -1,0 +1,74 @@
+<html>
+<head>
+<style>
+</style>
+<script>
+function isNumber(evt) {evt = (evt) ? evt : window.event;var charCode = (evt.which) ? evt.which : evt.keyCode;if (charCode > 31 && (charCode < 48 ||charCode > 57)) {return false;}return true;}
+function SlashInDate()
+{
+var newInput = document.getElementById('theDate');
+var x = document.getElementById('theDate').value;
+newInput.addEventListener('keyup', function( e ){if(e.which !== 8) {var numChars = e.target.value.length;if(numChars === 2 || numChars === 5){var thisVal = e.target.value;thisVal += '/';e.target.value = thisVal;}}});
+newInput.addEventListener('change', function( e )
+{
+
+var d = new Date();
+var year = x.substr(6,9);
+var day = x.substring(0,2);
+var month = x.substring(3,5);
+var current_year = d.getFullYear();
+var current_month = (d.getMonth() + 1);
+var todays_date = d.getDate();
+
+if((x.length<10) || (day>31 || day==00 || month==00 || month>12 ||year>d.getFullYear()) || (day>29 && month==2) || (day==29 && month==2 && (year%4!=0))) {
+document.getElementById('display').innerHTML = 'Invalid Date of Birth!';
+document.getElementById('display').style.color = '#FF0000';
+}
+else{
+var y = current_year - year;
+var m = current_month - month;
+var d = todays_date - day;
+var effective_month,age;
+if(d<0)
+{
+    effective_month = m - 1;
+}
+else
+{
+    effective_month = m;
+}
+if(effective_month<0)
+{
+    age = y-1;
+}
+else
+{
+    age = y;
+}
+if(age<18 || age>65) {
+    document.getElementById('display').innerHTML = 'Inappropriate Date of Birth --> Display Message as Required.';
+    document.getElementById('display').style.color = '#FF0000';
+    
+    }
+    else {
+        if(isNaN(age))
+        {
+            document.getElementById('display').innerHTML = 'Invalid Date of Birth!';
+            document.getElementById('display').style.color = '#FF0000';
+        }
+        else 
+        {
+            document.getElementById('display').innerHTML = age + ' Years';
+            document.getElementById('display').style.color = '#000000';
+        }
+    }
+}
+});
+}
+</script>
+</head>
+<body>
+<input type="text" id="theDate" onkeypress="return isNumber(event)" onkeyup="SlashInDate()" maxlength="10" placeholder="DD/MM/YYYY" onfocus="this.placeholder=''" onblur="this.placeholder='DD/MM/YYYY'" onchange="SlashInDate()">
+<div id="display"></div>
+</body>
+</html>
